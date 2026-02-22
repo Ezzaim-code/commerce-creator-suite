@@ -8,24 +8,25 @@ import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 export function ContactSection() {
-  const [sending, setSending] = useState(false);
-
+  const { toast } = useToast();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSending(true);
-    // Simulate send
-    setTimeout(() => {
-      setSending(false);
-      toast({
-        title: "Message envoyé !",
-        description: "Merci, je vous répondrai dans les plus brefs délais.",
-      });
-      (e.target as HTMLFormElement).reset();
-    }, 1000);
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const subject = formData.get("subject") as string;
+    const message = formData.get("message") as string;
+
+    const mailtoLink = `mailto:ezzaimradiya@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Nom: ${name}\nEmail: ${email}\n\n${message}`)}`;
+    window.open(mailtoLink, "_blank");
+
+    toast({
+      title: "Redirection vers votre client email",
+      description: "Votre application email va s'ouvrir pour envoyer le message.",
+    });
   };
 
   const contactInfo = [
@@ -102,9 +103,9 @@ export function ContactSection() {
             </div>
             <Input placeholder="Sujet" name="subject" required />
             <Textarea placeholder="Votre message..." name="message" rows={5} required />
-            <Button type="submit" className="w-full gap-2" disabled={sending}>
+            <Button type="submit" className="w-full gap-2">
               <Send className="h-4 w-4" />
-              {sending ? "Envoi en cours..." : "Envoyer le message"}
+              Envoyer le message
             </Button>
           </motion.form>
         </div>
