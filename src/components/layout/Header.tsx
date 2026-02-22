@@ -39,7 +39,7 @@ export function Header() {
             </a>
           ))}
           <Button size="sm" className="gap-2" asChild>
-            <a href="/cv-radiya-ezzaim.pdf" target="_blank" rel="noopener noreferrer">
+            <a href="/cv-radiya-ezzaim.pdf" download="CV-Radiya-Ezzaim.pdf">
               <Download className="h-4 w-4" />
               CV
             </a>
